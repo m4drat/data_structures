@@ -83,13 +83,18 @@ class Test_test1(unittest.TestCase):
         assert tmpdict[l1] == 'AAAA'
         assert tmpdict[l2] == 'BBBB'
 
-    #def test_I(self):
-    #    l1 = DLlist()
-    #    l1.push_back(1)
-    #    l1.push_back(2)
-    #    l1.push_back(3)
-    #    assert l1.pop(1) == 2
-    #    assert len(l1) == 2
+    def test_I(self):
+        l1 = DLlist()
+        l1.push_back(1)
+        l1.push_back(2)
+        l1.push_back(3)
+
+        l2 = DLlist()
+        l2.push_back(1)
+        l2.push_back(2)
+        l2.push_back(3)
+
+        assert l1 == l2
 
     def test_J(self):
         l1 = DLlist()

@@ -11,8 +11,16 @@ class InvalidIndex(Exception):
         Exception.__init__(self, f'Trying to access element at impossible index: {msg}')
 
 class ListNode():
+    # TODO add correct comaprison
+    def __eq__(self, other):
+        pass
+
+    # TODO add correct comaprison
+    def __ne__(self, other):
+        pass
+
     def __repr__(self):
-        return f'<data={self.data}> <prev_node={self.prev_node}> <next_node={self.next_node}>'
+        return '<curr_node.data={:<8}> <curr_node={:<9}> <prev_node={:<9}> <next_node={:<9}>'.format(str(self.data)[:8] if len(str(self.data)) <= 8 else str(self.data)[:5] + '...', 'None' if self == None else hex(id(self)), 'None' if self.prev_node == None else hex(id(self.prev_node)), 'None' if self.next_node == None else hex(id(self.next_node)))
 
     def __str__(self):
         return str(self.data)
@@ -62,12 +70,14 @@ class ListNode():
             self.next_node = None
             self.prev_node = p_node.prev_node
             self.prev_node.next_node = self
-
+        
+        # Delete all links, to help python GC
         if p_node != None and n_node != None:
             self.prev_node = None
             self.next_node = None
             self.data = None
 
+    # TODO write algorithm for tail insert
     def front_link(self, new_node):
         '''
         Head insert
@@ -141,41 +151,36 @@ class ListNode():
         pass
 
 class DLlist():
+    # TODO add correct comaprison
+    def __eq__(self, other):
+        pass
+
+    # TODO add correct comaprison
+    def __ne__(self, other):
+        pass
+
     def __repr__(self):
         str_repr = ''
-        for idx in range(self.__length):
-            str_repr += repr(self.next(True)) + '\n'
-        
-        self.__idx = 0
-        self.__current_node = None
-        
+        try:
+            while self.next(True):
+                str_repr += repr(self.__current_node) + '\n'
+        except StopIteration:
+            pass
         return str_repr
 
     def __str__(self):
-        res = '['
-        for idx in range(self.__length):
-            if type(self[idx]) == str:
-                res += "'" + self[idx] + "'"
-            elif type(self[idx]) == int:
-                res += str(self[idx])
-            elif type(self[idx]) == bool:
-                res += str(self[idx])
-            else:
-                res += str(self[idx])
+        return str([f'{i}' if type(i) == str else i for i in self])
 
-            if idx + 1 != self.__length:
-                res += ', '
-
-        res += ']'
-        return res
-
-    # returns listNode.data
+    # TODO make it work with negative indexes
     def __getitem__(self, key):
-        if key < 0 or key >= self.__length:
+        if key < -self.__length or key >= self.__length:
             raise InvalidIndex(key)
-        for idx in range(key + 1):
-            current = self.next()
-
+        if key < 0:
+            pass
+        else:
+            for idx in range(key + 1):
+                current = self.next()
+        
         self.__idx = 0
         self.__current_node = None
         return current
@@ -200,7 +205,6 @@ class DLlist():
     def __len__(self):
         return self.__length
 
-    # TODO hash realisation
     def __hash__(self):
         return hash(str(self))
 
@@ -287,6 +291,9 @@ class DLlist():
         return self.__length
 
 def main():
+    import timeit
+
+    start = timeit.default_timer()
     print('Filling DoubleLinkedList with B, C, D, E, F')
     l = DLlist()
     l.push_back('A') # 0
@@ -337,7 +344,9 @@ def main():
     #l.delete(l.length - 1)
     #lstdata = ', '.join([data for data in l])
     #print(f'List data: {lstdata}')
+    stop = timeit.default_timer()
 
+    print(f'Execution time: {stop-start:.6f} s')
 
 if __name__ == '__main__':
     main()
