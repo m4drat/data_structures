@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29306.81
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "DoubleLinkedList", "DoubleLinkedList\DoubleLinkedList.pyproj", "{AFA7F37F-CB1D-4415-BBEA-D8432B1B3D59}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AFA7F37F-CB1D-4415-BBEA-D8432B1B3D59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFA7F37F-CB1D-4415-BBEA-D8432B1B3D59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FAD8F534-8B2E-434B-8C50-95A04B3B75D0}
+	EndGlobalSection
+EndGlobal
