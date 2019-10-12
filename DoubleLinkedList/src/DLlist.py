@@ -4,28 +4,35 @@
 
 class NegativeListLength(Exception):
     def __init__(self):
-        Exception.__init__(self, 'Trying to initialize list with negative length!')
+        Exception.__init__(self, 'Trying to initialize double linked list with negative length!')
+
+class InvalidInitList(Exception):
+    def __init__(self):
+        Exception.__init__(self, 'Trying to initialize double linked list with incorrect init_list!')
 
 class InvalidIndex(Exception):
     def __init__(self, msg):
         Exception.__init__(self, f'Trying to access element at impossible index: {msg}')
 
 class ListNode():
-    # TODO add correct comaprison
     def __eq__(self, other):
-        pass
-
-    # TODO add correct comaprison
-    def __ne__(self, other):
-        pass
+        if isinstance(other, ListNode):
+            return (self.data == other.data and
+                    self.prev_node == other.prev_node and
+                    self.next_node == other.next_node)
+        return False
 
     def __repr__(self):
-        return '<curr_node.data={:<8}> <curr_node={:<9}> <prev_node={:<9}> <next_node={:<9}>'.format(str(self.data)[:8] if len(str(self.data)) <= 8 else str(self.data)[:5] + '...', 'None' if self == None else hex(id(self)), 'None' if self.prev_node == None else hex(id(self.prev_node)), 'None' if self.next_node == None else hex(id(self.next_node)))
+        return '<curr_node.data={:<8}> <type={:<20}> <curr_node={:<9}> <prev_node={:<9}> <next_node={:<9}>'.format(str(self.data)[:8] if len(str(self.data)) <= 8 else str(self.data)[:5] + '...', 
+                                                                                                                                  str(type(self.data))[str(type(self.data)).find('\''):-1],
+                                                                                                                                 'None' if self == None else hex(id(self)), 
+                                                                                                                                 'None' if self.prev_node == None else hex(id(self.prev_node)), 
+                                                                                                                                 'None' if self.next_node == None else hex(id(self.next_node)))
 
     def __str__(self):
         return str(self.data)
 
-    def __init__(self, data, prev_node=None, next_node=None):
+    def __init__(self, data=None, prev_node=None, next_node=None):
         self.data      = data
         self.prev_node = prev_node
         self.next_node = next_node
@@ -77,49 +84,64 @@ class ListNode():
             self.next_node = None
             self.data = None
 
-    # TODO write algorithm for tail insert
     def front_link(self, new_node):
         '''
         Head insert
         Algorithm:
-            - create new_node (Z)
-            - set new_node (Z) p_node=None
-            - set new_node (Z) n_node=previous_node (A)
-            - set previous_node (A) p_node=new_node (Z)
+            - create new_node(Z)
+            - move start_node(A).data into start_node.(Z).data
+            - start_node.data = new_node.data (before editing)
+            - new_node.prev_node = start_node
+            - new_node.next_node = start_node.next_node
+            - start_node.next_node.prev_node = new_node
+            - start_node.next_node = new_node
 
-        A. p_node=None, n_node=B
+        A. p_node=None, n_node=B    (start_node)
         B. p_node=A,    n_node=C
-        C. p_node=B,    n_node=None
+        C. p_node=B,    n_node=None (end_node)
             ==> (Z.p_node=None, Z.n_node=A, A.p_node=Z)
-        Z. p_node=None, n_node=A
+        Z. p_node=None, n_node=A    (start_node)
         A. p_node=Z,    n_node=B
         B. p_node=A,    n_node=C
-        C. p_node=B,    n_node=None
+        C. p_node=B,    n_node=None (end_node)
         
         OR 
 
         Middle insert
         Algorithm:
-            - create new_node
+            - create new_node(Z)
             - set new_node(Z) p_node=previous_node(A)
             - set new_node(Z) n_node=next_node(B)
             - set previous_node(A) n_node=new_node(Z)
             - set next_node(B) p_node=new_node(Z)
 
-        A. p_node=None, n_node=B
+        A. p_node=None, n_node=B    (start_node)
         B. p_node=A,    n_node=C
-        C. p_node=B,    n_node=None
+        C. p_node=B,    n_node=None (end_node)
             ==> (A.n_node=Z, Z.p_node=A, Z.n_node=B, B.p_node=Z)
-        A. p_node=None, n_node=Z
+        A. p_node=None, n_node=Z    (start_node)
         Z. p_node=A,    n_node=B
         B. p_node=Z,    n_node=C
-        C. p_node=B,    n_node=None
+        C. p_node=B,    n_node=None (end_node)
 
         OR
 
-        Tail insert
+        Tail insert (analogue with middle insert)
         Algorithm:
-            - 
+            - create new_node(Z)
+            - set new_node(Z) p_node=previous_node(B)
+            - set new_node(Z) n_node=next_node(C)
+            - set previous_node(B) n_node=new_node(Z)
+            - set next_node(C) p_node=new_node(Z)
+
+        A. p_node=None, n_node=B    (start_node)
+        B. p_node=A,    n_node=C
+        C. p_node=B,    n_node=None (end_node)
+            ==> (A.n_node=Z, Z.p_node=A, Z.n_node=B, B.p_node=Z)
+        A. p_node=None, n_node=Z    (start_node)
+        B. p_node=Z,    n_node=Z
+        Z. p_node=B,    n_node=C    
+        C. p_node=Z,    n_node=None (end_node)
         '''
 
         new_node.next_node = self
@@ -153,23 +175,29 @@ class ListNode():
 class DLlist():
     # TODO add correct comaprison
     def __eq__(self, other):
-        pass
-
-    # TODO add correct comaprison
-    def __ne__(self, other):
-        pass
+        if isinstance(other, DLlist):
+            return (len(other) == self.__length and
+                    sum([True for i, j in zip(self, other) if i == j]) == self.__length)
+        return False
 
     def __repr__(self):
         str_repr = ''
+        idx = 0
         try:
             while self.next(True):
-                str_repr += repr(self.__current_node) + '\n'
+                str_repr += '[{:>2}] {}\n'.format(str(idx), repr(self.__current_node))
+                idx += 1
         except StopIteration:
             pass
         return str_repr
 
     def __str__(self):
-        return str([f'{i}' if type(i) == str else i for i in self])
+        return str([f'{i}' for i in self])
+        # return str([f'{i}' if type(i) == str else i for i in self])
+
+    # TODO make it work with negative indexes
+    def __setitem__(self, key, value):
+        self.__get(key).data = value
 
     # TODO make it work with negative indexes
     def __getitem__(self, key):
@@ -194,13 +222,27 @@ class DLlist():
     def __len__(self):
         return self.__length
 
-    def __init__(self):
+    def __init__(self, size=0, init_list=None):
         self.__idx    = 0
         self.__current_node = None
 
         self.__length = 0
         self.__start_node = None
         self.__end_node   = None
+
+        if size < 0:
+            raise NegativeListLength
+        elif size > 0:
+            for i in range(size):
+                self.push_back(None)
+        elif init_list != None:
+            try:
+                tmp = iter(init_list)
+            except TypeError:
+                raise InvalidInitList
+            else:
+                for elem in init_list:
+                    self.push_back(elem)
 
     def __len__(self):
         return self.__length
@@ -213,7 +255,7 @@ class DLlist():
             if self.__idx == 0:
                 self.__current_node = self.__start_node
             else:
-                self.__current_node = next(self.__current_node)
+                self.__current_node = self.__current_node.next()
 
             self.__idx += 1
             if get_list_node:
@@ -273,7 +315,7 @@ class DLlist():
         return self.__length
 
     # TODO after_insert
-    def after_insert(self, new_node) -> int:
+    def after_insert(self, data, pos: int) -> int:
         pass
 
     #def pop(self, pos: int):
@@ -282,13 +324,18 @@ class DLlist():
     #    self.__length -= 1
     #    return curr_node.data
 
-    def delete(self, pos: int):
+    # deletes 1 element from dll
+    def delete(self, pos: int) -> int:
         curr_node = self.__get(pos)
 
         curr_node.unlink()
         self.__length -= 1
 
         return self.__length
+
+    # creates an independent copy of dll
+    def copy(self):
+        return DLlist(init_list=self)
 
 def main():
     import timeit
@@ -344,6 +391,14 @@ def main():
     #l.delete(l.length - 1)
     #lstdata = ', '.join([data for data in l])
     #print(f'List data: {lstdata}')
+    dll = DLlist()
+    dll.push_back(1)
+    dll.push_back(1)
+    dll.push_back(1)
+
+    print(dll[0])
+
+
     stop = timeit.default_timer()
 
     print(f'Execution time: {stop-start:.6f} s')

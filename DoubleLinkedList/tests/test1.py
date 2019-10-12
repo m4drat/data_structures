@@ -77,8 +77,12 @@ class Test_test1(unittest.TestCase):
         l2.push_back(1)
         l2.push_back(2)
         l2.push_back(3)
+        l2.push_back(4)
 
         tmpdict = {l1 : 'AAAA', l2 : 'BBBB'}
+
+        print(tmpdict[l1])
+        print(tmpdict[l2])
 
         assert tmpdict[l1] == 'AAAA'
         assert tmpdict[l2] == 'BBBB'
@@ -116,6 +120,87 @@ class Test_test1(unittest.TestCase):
             l1.delete(i)
 
         assert len(l1) == 0x0
+
+    def test_L(self):
+        l1 = DLlist()
+        l1.push_back(1)
+        l1.push_back(2)
+        l1.push_back(3)
+
+        l2 = DLlist()
+        l2.push_back(1)
+        l2.push_back(2)
+        l2.push_back(3)
+
+        assert l1 == l2
+
+    # Test init_list initialization
+    def test_M(self):
+        l1 = DLlist(init_list=[1, 2, 3, 4])
+        assert (l1[0] == 1 and
+                l1[1] == 2 and
+                l1[2] == 3 and
+                l1[3] == 4)
+    
+    def test_N(self):
+        l1 = DLlist(5)
+        assert len(l1) == 5
+
+    def test_O(self):
+        l1 = DLlist()
+        l1.push_back(1)
+        l1.push_back(3)
+        l1.push_back(2)
+
+        l2 = DLlist()
+        l2.push_back(1)
+        l2.push_back(2)
+        l2.push_back(3)
+
+        tmpdict = {l1 : 'AAAA', l2 : 'BBBB'}
+
+        print(tmpdict[l1])
+        print(tmpdict[l2])
+
+        assert tmpdict[l1] == 'AAAA'
+        assert tmpdict[l2] == 'BBBB'
+
+    def test_P(self):
+        l1 = DLlist()
+        l1.push_back(1)
+        l1.push_back(2)
+
+        l2 = l1
+        l2.push_back(3)
+
+        assert (len(l1) == 3 and
+                len(l2) == 3 and
+                id(l1) == id(l2))
+
+    def test_Q(self):
+        l1 = DLlist()
+        l1.push_back(1)
+        l1.push_back(2)
+
+        l1[1] = 3
+
+        assert l1[1] == 3
+
+    def test_R(self):
+        l1 = DLlist()
+        l1.push_back(1)
+        l1.push_back(2)
+
+        l2 = l1.copy()
+        l2.push_back(3)
+
+        assert (len(l1) == 2 and
+                len(l2) == 3 and
+                id(l1) != id(l2) and
+                l1 != l2)
+
+    def test_S(self):
+        pass
 
 if __name__ == '__main__':
     unittest.main()
