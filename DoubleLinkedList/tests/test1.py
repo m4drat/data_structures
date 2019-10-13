@@ -1,7 +1,7 @@
 import unittest
 from src.DLlist import *
 
-class Test_test1(unittest.TestCase):
+class TestDefaultFunctionality(unittest.TestCase):
     def test_A(self):
         l = DLlist()
         l.push_back(1)
@@ -200,7 +200,19 @@ class Test_test1(unittest.TestCase):
                 l1 != l2)
 
     def test_S(self):
-        pass
+        l = DLlist()
+        l.push_back(1)
+        l.delete(0)
+        l.push_back('A')
+        l.push_back('B')
+        l.push_back('C')
+        l.push_back('D')
+
+        assert (len(l) == 4 and
+                l[0] == 'A' and
+                l[1] == 'B' and
+                l[2] == 'C' and
+                l[3] == 'D')
 
 if __name__ == '__main__':
     unittest.main()

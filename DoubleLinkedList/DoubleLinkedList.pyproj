@@ -22,6 +22,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="src\DLlist.py" />
+    <Compile Include="src\Ref.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="tests\test1.py">
       <SubType>Code</SubType>
     </Compile>
