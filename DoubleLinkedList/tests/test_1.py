@@ -136,7 +136,7 @@ class TestDefaultFunctionality(unittest.TestCase):
 
     # Test init_list initialization
     def test_M(self):
-        l1 = DLlist(init_list=[1, 2, 3, 4])
+        l1 = DLlist([1, 2, 3, 4])
         assert (l1[0] == 1 and
                 l1[1] == 2 and
                 l1[2] == 3 and
@@ -213,6 +213,50 @@ class TestDefaultFunctionality(unittest.TestCase):
                 l[1] == 'B' and
                 l[2] == 'C' and
                 l[3] == 'D')
+
+    def test_T(self):
+        l = DLlist()
+        l.push_front('A')
+        l.push_front('B')
+        l.push_front('C')
+        l.push_front('D')
+
+        assert (len(l) == 4 and
+                l[0] == 'D' and
+                l[1] == 'C' and
+                l[2] == 'B' and
+                l[3] == 'A')
+
+    def test_U(self):
+        l = DLlist()
+        l.push_front('A')
+        l.push_front('B')
+        l.push_front('C')
+        l.push_front('D')
+
+        assert (len(l) == 4 and
+                l[-1] == 'A' and
+                l[-2] == 'B' and
+                l[-3] == 'C' and
+                l[-4] == 'D')
+
+    def test_V(self):
+         pass
+
+    def test_V(self):
+         pass
+
+    def test_W(self):
+         pass
+
+    def test_X(self):
+         pass
+
+    def test_Y(self):
+         pass
+
+    def test_Z(self):
+         pass
 
 if __name__ == '__main__':
     unittest.main()
