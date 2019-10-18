@@ -1,13 +1,16 @@
 {
+    "gitlens.hovers.annotations.over": "line",
+    "gitlens.hovers.changesDiff": "hunk",
+
     "python.pythonPath": "C:\\python373-x32\\python.exe",
+    "python.testing.unittestEnabled": true,
+    "python.testing.pytestEnabled": false,
+    "python.testing.nosetestsEnabled": false,
     "python.testing.unittestArgs": [
         "-v",
         "-s",
-        "./tests",
+        "./DoubleLinkedList/tests",
         "-p",
         "test_*.py"
-    ],
-    "python.testing.pytestEnabled": false,
-    "python.testing.nosetestsEnabled": false,
-    "python.testing.unittestEnabled": true
+    ]
 }

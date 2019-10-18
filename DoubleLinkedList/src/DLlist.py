@@ -406,7 +406,7 @@ class DLlist():
 
         return None
 
-def main():
+def test():
     import timeit
 
     start = timeit.default_timer()
@@ -482,4 +482,4 @@ def main():
     print(f'Execution time: {stop-start:.6f} s')
 
 if __name__ == '__main__':
-    main()
+    test()

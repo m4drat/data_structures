@@ -1,5 +1,5 @@
 import unittest
-from src.DLlist import *
+from DoubleLinkedList.src.DLlist import DLlist
 
 class TestDefaultFunctionality(unittest.TestCase):
     def test_A(self):
@@ -239,9 +239,6 @@ class TestDefaultFunctionality(unittest.TestCase):
                 l[-2] == 'B' and
                 l[-3] == 'C' and
                 l[-4] == 'D')
-
-    def test_V(self):
-         pass
 
     def test_V(self):
          pass
