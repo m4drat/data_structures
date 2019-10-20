@@ -6,6 +6,7 @@ from __future__ import annotations # to support Forward-annotations
 import typing
 
 class NegativeListLength(Exception):
+    
     def __init__(self):
         Exception.__init__(self, 'Trying to initialize double linked list with negative length!')
 
@@ -34,7 +35,7 @@ class ListNode():
 
     def __repr__(self) -> str:
         return '<curr_node.data={:<8}> ' \
-               '<type={:<20}> ' \
+               '<type={:<10}> ' \
                '<curr_node={:<9}> ' \
                '<prev_node={:<9}> ' \
                '<next_node={:<9}>'.format((str(self.data)[:8] if len(str(self.data)) <= 8
@@ -54,18 +55,39 @@ class ListNode():
         return self.next()
 
     def next(self):
+        '''returns next node, that references in current
+
+        Return
+            ListNode or None
+        '''
         return self.next_node
 
     def prev(self):
+        '''returns previous node, that references in current
+        Return
+            ListNode or None
+        '''
         return self.prev_node
 
     def copy(self) -> ListNode:
+        '''Copies current node
+
+        Return
+            ListNode with current node content
+        '''
         return ListNode(self.data, self.prev_node, self.next_node)
 
     def clear_node(self):
+        ''' Clears current node, by setting all its pointers to None
+        
+        Return
+            None
+        '''
         self.data = None
         self.prev_node = None
         self.next_node = None
+
+        return None
 
 
 class DLlist():
@@ -74,13 +96,12 @@ class DLlist():
     __start_node: ListNode
     __end_node: ListNode
 
-    def __init__(self, initializer=None):
-        self.__current_node = None
+    def __init__(self, initializer=None, current_node=None):
+        self.__current_node = current_node
 
         self.__length = 0
         self.__start_node = None
         self.__end_node   = None
-
         
         if initializer == None:
             pass
@@ -121,16 +142,13 @@ class DLlist():
 
     def __str__(self) -> str:
         return str([f'{i}' for i in self])
-        # return str([f'{i.to_str()}' for i in self])
-        # return str([f'{i}' if type(i) == str else i for i in self])
 
     # TODO make it work with negative indexes
     def __setitem__(self, key: int, value: typing.Any) -> None:
         self.__get(key).data = value
-
         return None
 
-    # TODO make it work with slices
+    # TODO make it work with slices + refactor
     def __getitem__(self, given) -> typing.Any:
         if isinstance(given, slice):
             raise NotImplementedError
@@ -162,7 +180,7 @@ class DLlist():
 
     # FIXME
     def __iter__(self):
-        return self
+        return DLlist(self, self.__current_node)
 
     def __next__(self):
         return self.next().data
@@ -199,6 +217,11 @@ class DLlist():
 
     # aka append in the end
     def push_back(self, data: typing.Any) -> int:
+        '''append new ListNode in the end, with node.data = data
+        
+        Return
+            list length : int 
+        '''
         if self.__start_node == None and self.__end_node == None:
             # Base case. List isn't initialized
             '''
@@ -285,6 +308,11 @@ class DLlist():
         return self.__length 
 
     def push_front(self, data: typing.Any) -> int:
+        '''insert new ListNode at the beginning
+        
+        Return
+            list length : int 
+        '''
         if self.__start_node == None and self.__end_node == None:
             # Base case. List isn't initialized
             '''
@@ -371,25 +399,50 @@ class DLlist():
 
     # TODO insert before given element
     def front_insert(self, data: typing.Any, pos: int) -> int:
+        '''insert new node, with node.data = data before given node (by index)
+        
+        Return
+            list length : int
+        '''
         raise NotImplementedError()
         return self.__length
 
     # TODO insert after given element
     def rear_insert(self, data: typing.Any, pos: int) -> int:
+        '''insert new node, with node.data = data after given node (by index)
+        
+        Return
+            list length : int
+        '''
         raise NotImplementedError()
         return self.__length
 
     # TODO node deletion
     def delete(self, pos: int) -> int:
+        '''delete one element from list
+        
+        Return
+            list length : int
+        '''
         raise NotImplementedError()
         return self.__length
 
     # creates an independent copy of dll
     def copy(self) -> DLlist:
+        '''create independent copy of current list
+       
+        Return 
+            DLlist
+        '''
         return DLlist(self)
 
     # Todo 'clear' implementation
     def clear(self) -> None:
+        '''clear memory currently occupied by list (delete all pointers in each node)
+        
+        Return
+            None
+        '''
         raise NotImplementedError
 
         self.__current_node = None
