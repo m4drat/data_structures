@@ -5,8 +5,11 @@
 from __future__ import annotations # to support Forward-annotations
 import typing
 
+class ListIsEmpty(Exception):
+    def __init__(self):
+        Exception.__init__(self, 'Cannot insert node, because List is empty!')
+
 class NegativeListLength(Exception):
-    
     def __init__(self):
         Exception.__init__(self, 'Trying to initialize double linked list with negative length!')
 
@@ -89,7 +92,6 @@ class ListNode():
 
         return None
 
-
 class DLlist():
     __current_node: ListNode
     __length: int
@@ -133,7 +135,7 @@ class DLlist():
             str_repr = ''
             idx = 0
             while self.next():
-                str_repr += '[{:>2}] {}\n'.format(str(idx), repr(self.__current_node))
+                str_repr += '[{idx:>{align}}] {node}\n'.format(idx=str(idx), align=len(str(self.__length)), node=repr(self.__current_node))
                 idx += 1
         except StopIteration:
             pass
@@ -149,12 +151,14 @@ class DLlist():
         return None
 
     # TODO make it work with slices + refactor
-    def __getitem__(self, given) -> typing.Any:
+    def __getitem__(self, given: int) -> typing.Any:
         if isinstance(given, slice):
             raise NotImplementedError
         elif isinstance(given, int):
             if given < 0 and given >= -self.__length:
                 given += self.__length
+            elif self.__length == 0:
+                raise ListIsEmpty()
             elif given < -self.__length or given >= self.__length:
                 raise InvalidIndex(given)
             for idx in range(given + 1):
@@ -170,6 +174,8 @@ class DLlist():
         elif isinstance(pos, int):
             if pos < 0 and pos >= -self.__length:
                 pos += self.__length
+            elif self.__length == 0:
+                raise ListIsEmpty()
             elif pos < -self.__length or pos >= self.__length:
                 raise InvalidIndex(pos)
             for idx in range(pos + 1):
@@ -397,34 +403,97 @@ class DLlist():
         self.__length += 1
         return self.__length
 
-    # TODO insert before given element
     def front_insert(self, data: typing.Any, pos: int) -> int:
         '''insert new node, with node.data = data before given node (by index)
         
         Return
             list length : int
         '''
-        raise NotImplementedError()
+
+        node = self.__get(pos)
+
+        # First node in the list
+        if self.__start_node != None and self.__end_node is self.__start_node:
+            new_node = ListNode(data, None, self.__end_node)
+            self.__start_node = new_node
+            self.__end_node.prev_node = self.__start_node
+        # node is head
+        elif node is self.__start_node:
+            new_node = ListNode(data, None, self.__start_node)
+            node.prev_node = new_node
+            self.__start_node = new_node
+        # node is tail
+        elif node is self.__end_node:
+            new_node = ListNode(data, node.prev_node, node)
+            node.prev_node.next_node = new_node
+            node.prev_node = new_node
+        else:
+            new_node = ListNode(data, node.prev_node, node)
+            node.prev_node.next_node = new_node
+
+        self.__length += 1
+
         return self.__length
 
-    # TODO insert after given element
     def rear_insert(self, data: typing.Any, pos: int) -> int:
         '''insert new node, with node.data = data after given node (by index)
         
         Return
             list length : int
         '''
-        raise NotImplementedError()
+        
+        node = self.__get(pos)
+
+        # First node in the list
+        if self.__start_node != None and self.__end_node is self.__start_node:
+            new_node = ListNode(data, self.__start_node, None)
+            self.__end_node = new_node
+            self.__start_node.next_node = self.__end_node
+        # node is head
+        elif node is self.__start_node:
+            new_node = ListNode(data, node, node.next_node)
+            node.next_node.prev_node = new_node
+            node.next_node = new_node
+        # node is tail
+        elif node is self.__end_node:
+            new_node = ListNode(data, self.__end_node, None)
+            node.next_node = new_node
+            self.__end_node = new_node
+        else:
+            new_node = ListNode(data, node, node.next_node)
+            node.next_node.prev_node = new_node
+            node.next_node = new_node
+
+        self.__length += 1
+
         return self.__length
 
-    # TODO node deletion
     def delete(self, pos: int) -> int:
         '''delete one element from list
         
         Return
             list length : int
         '''
-        raise NotImplementedError()
+        node = self.__get(pos)
+
+        # First node in the list
+        if self.__start_node != None and self.__end_node is self.__start_node:
+            self.__start_node = None
+            self.__end_node = None
+        # node is head
+        elif node is self.__start_node:
+            self.__start_node.next_node.prev_node = None
+            self.__start_node = self.__start_node.next_node
+        # node is tail
+        elif node is self.__end_node:
+            self.__end_node.prev_node.next_node = None
+            self.__end_node = self.__end_node.prev_node
+        else:
+            node.prev_node.next_node = node.next_node
+            node.next_node.prev_node = node.prev_node
+
+        self.__length -= 1
+
         return self.__length
 
     # creates an independent copy of dll
@@ -443,16 +512,8 @@ class DLlist():
         Return
             None
         '''
-        raise NotImplementedError
-
-        self.__current_node = None
-        try:
-            while self.next():
-                curr = self.__current_node 
-                self.__current_node = self.__current_node.next_node 
-                self.__current_node.clear_node()
-        except StopIteration:
-            pass
+        self.__start_node = None
+        self.__end_node = None
 
         self.__current_node = None
         self.__length = 0
@@ -463,7 +524,7 @@ def test():
     import timeit
 
     start = timeit.default_timer()
-    print('Filling DoubleLinkedList with A, B, C, D, E')
+    print(' Filling DoubleLinkedList with A, B, C, D, E')
     l = DLlist()
     l.push_back('A') # 0
     l.push_back('B') # 1
