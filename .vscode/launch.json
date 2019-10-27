@@ -11,7 +11,7 @@
             "type": "python",
             "request": "launch",
             "program": "${file}",
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
         },
         {
             "name": "Python: Remote Attach",
@@ -30,7 +30,7 @@
             "name": "Python: Module",
             "type": "python",
             "request": "launch",
-            "module": "enter-your-module-name-here",
+            "module": "DoubleLinkedList.src.DLlist",
             "console": "integratedTerminal"
         },
         {
@@ -67,6 +67,14 @@
             "request": "launch",
             "program": "${file}",
             "console": "externalTerminal"
+        },
+        {
+            "name": "Python Debug: Current File (External Terminal)",
+            "type": "python",
+            "request": "launch",
+            "stopOnEntry": true,
+            "program": "${file}",
+            "console": "externalTerminal",
         }
     ]
 }

@@ -4,6 +4,7 @@
 
 from __future__ import annotations # to support Forward-annotations
 import typing
+import gc
 
 class ListIsEmpty(Exception):
     def __init__(self):
@@ -494,6 +495,10 @@ class DLlist():
 
         self.__length -= 1
 
+        gb = gc.collect()
+        if __debug__:
+            print(f'Objects collected by gc: {gb}')
+
         return self.__length
 
     # creates an independent copy of dll
@@ -505,7 +510,6 @@ class DLlist():
         '''
         return DLlist(self)
 
-    # Todo 'clear' implementation
     def clear(self) -> None:
         '''clear memory currently occupied by list (delete all pointers in each node)
         
@@ -517,6 +521,10 @@ class DLlist():
 
         self.__current_node = None
         self.__length = 0
+
+        gb = gc.collect()
+        if __debug__:
+            print(f'Objects collected by gc: {gb}')
 
         return None
 
@@ -541,55 +549,6 @@ def test():
     l.clear()
 
     exit()
-
-    # print(l[1:4])
-
-    #lstdata = ', '.join([data.data for data in l])
-    #print(f'List data: {lstdata}')
-    #print(f'Double-linked list length: {len(l)}')
-    ##print(f'Element at idx[2]: {l[2]}')
-
-    ##print(f'Before deleting element at idx 2')
-    ##lstdata = ', '.join([data for data in l])
-    ##print(f'List data: {lstdata}')
-
-    #l.delete(0)
-    #lstdata = ', '.join([data for data in l])
-    #print(f'List data after deleting 0 element: {lstdata}')
-
-    ##l.insert('Z', 2)
-    ##lstdata = ', '.join([data for data in l])
-    ##print(f'List data after inserting \'Z\' at 2 index: {lstdata}')
-
-    ##print(f'Popped element from 0 position: {l.pop(2)}')
-    ##lstdata = ', '.join([data for data in l])
-    ##print(f'List data: {lstdata}')
-
-    #l.front_insert('A', 0)
-    #lstdata = ', '.join([data for data in l])
-    #print(f'List data after inserting \'A\' at 0 index: {lstdata}')
-
-    #l.front_insert('F', len(l)-1)
-    #lstdata = ', '.join([data for data in l])
-    #print(f'List data after inserting \'F\' at {len(l)-2} index: {lstdata}')
-
-    #l.delete(len(l)-1)
-    #lstdata = ', '.join([data for data in l])
-    #print(f'List data after deleting {len(l)} element: {lstdata}')
-
-    ##l.insert('Y', l.length-1)
-    ##lstdata = ', '.join([data for data in l])
-    ##print(f'List data after inserting \'Y\' at {l.length-1} index: {lstdata}')
-
-    ##l.delete(l.length - 1)
-    ##lstdata = ', '.join([data for data in l])
-    ##print(f'List data: {lstdata}')
-    #l = DLlist()
-    #l.push_back('A')
-    #l.push_back('B')
-    #l.push_back('C')
-    #l.push_back('D')
-    #print(l)
 
     stop = timeit.default_timer()
 
