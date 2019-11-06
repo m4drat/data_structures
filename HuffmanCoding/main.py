@@ -1,7 +1,8 @@
 from src.HuffmanCoding import HuffmanCoding
 
 def main():
-    pass
+    hc = HuffmanCoding()
+    print(f"{hc.encode('AAAABBCBB')}")
 
 if __name__ == '__main__':
     main()

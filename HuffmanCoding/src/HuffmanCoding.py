@@ -15,6 +15,12 @@ class HuffmanCoding:
         pass
 
     def encode(self, msg: str):
+        '''
+        msg: str
+            input message
+        return: str
+            huffman encoded binary string
+        '''
         # convert string to uppercase
         msg = self.normalize(msg)
 
@@ -32,23 +38,29 @@ class HuffmanCoding:
         self.heap = [[freq, [char, ""]] for char, freq in freq_dict.items()]
         heapq.heapify(self.heap)
 
+        # iterate over heap, while there is no more unused nodes
         while len(self.heap) > 1:
             min0 = heapq.heappop(self.heap) # extract char with smallest frequency
             min1 = heapq.heappop(self.heap) # extract char with smallest frequency
 
+            # update code value for char in heap
             for pair in min0[1:]:
                 pair[1] = '0' + pair[1]
             for pair in min1[1:]:
                 pair[1] = '1' + pair[1]
 
+            # merge two nodes
             heapq.heappush(self.heap, [min0[0] + min1[0]] + min0[1:] + min1[1:])
 
-        self.heap = sorted(heapq.heappop(self.heap)[1:], key=lambda p: (len(p[-1]), p))
+        # create dict from heap (key - char, value - huffman code)
+        self.heap = dict(heapq.heappop(self.heap)[1:])
 
-        return ''.join([dict(self.heap)[char] for char in msg])
+        # convert to binary string
+        return ''.join([self.heap[char] for char in msg])
 
 def main():
-    pass
+    hc = HuffmanCoding()
+    print(hc.encode('AAAABBBCC'))
 
 if __name__ == '__main__':
     main()
