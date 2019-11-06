@@ -2,7 +2,6 @@ import collections
 import binarytree
 import heapq
 
-from freq_dicts import freq_rus, freq_eng
 from dataclasses import dataclass
 
 @dataclass
@@ -50,9 +49,7 @@ class HuffmanCoding:
         return ''.join([dict(self.heap)[char] for char in msg])
 
 def main():
-    hc = HuffmanCoding(default_freq_dict=None)
-    encoded = hc.encode()
-    print(encoded)
+    pass
 
 if __name__ == '__main__':
     main()

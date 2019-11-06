@@ -1,9 +1,17 @@
 import unittest
-from DoubleLinkedList.src.HuffmanCoding import HuffmanCoding
+from HuffmanCoding.src.HuffmanCoding import HuffmanCoding
+from HuffmanCoding.src.freq_dicts import freq_eng
 
 class HuffmanCodingTest(unittest.TestCase):
     def test_A(self):
-        pass
+        hc = HuffmanCoding(default_freq_dict=freq_eng)
+        encoded = hc.encode('AAABBBBBDDFFPPQQQWPPPQQQWWWWWWWWWWWWWWWKKKKKKJJGGGMMO')
+        self.assertEqual(encoded, '010101111111111111111111111111110110111001100100010001111000111100011110001101100010001000111100011110001111000110111011101110111011101110111011101110111011101110111011101111101111101111101111101111101111101111100111110011001100110011110111000')
+
+    def test_B(self):
+        hc = HuffmanCoding(default_freq_dict=None)
+        encoded = hc.encode('AAABBBBBDDFFPPQQQWPPPQQQWWWWWWWWWWWWWWWKKKKKKJJGGGMMO')
+        self.assertEqual(encoded, '00010001000110111011101110111011010110101110100101000010011001001001100100100110010010011111111111111111111111111111101101101101101101110101101010100010001000000000001010')
 
 if __name__ == '__main__':
     unittest.main()

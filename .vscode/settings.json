@@ -9,7 +9,7 @@
     "python.testing.unittestArgs": [
         "-v",
         "-s",
-        "./DoubleLinkedList/tests",
+        "./HuffmanCoding/tests",
         "-p",
         "test_*.py"
     ]
