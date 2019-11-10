@@ -1,20 +1,50 @@
+from __future__ import annotations
+
 import collections
+import typing
 import heapq
 
 from dataclasses import dataclass
 
 @dataclass
+class ListNode:
+    left: ListNode
+    right: ListNode
+    value: typing.Any
+
+@dataclass
 class HuffmanCoding:
     heap: list = None
+    hf_codes: dict = None
     default_freq_dict: dict = None
 
-    def normalize(self, msg: str):
+    def normalize(self, msg: str) -> str:
         return msg.upper()
 
-    def decode(self):
-        pass
+    def decode(self, msg: str, freq: dict) -> str:
+        '''
+        params:
+            msg: str
+                huffman-coded message
+            freq: dict
+                dict with all char codes and their symbol 
+        return: str
+            decoded string
+        '''
 
-    def encode(self, msg: str):
+        out = ''
+        cnt = 0
+
+        while cnt != len(msg):
+            for k, v in freq.items():
+                if msg[cnt:cnt+len(v)] == v:
+                    out += k
+                    cnt += len(v)
+                else:
+                    continue
+        return out
+
+    def encode(self, msg: str) -> str:
         '''
         msg: str
             input message
@@ -22,7 +52,7 @@ class HuffmanCoding:
             huffman encoded binary string
         '''
         # convert string to uppercase
-        msg = self.normalize(msg)
+        # msg = self.normalize(msg)
 
         if type(msg) == str: # we need to count frequences in message
             freq_dict = collections.Counter(msg)
@@ -52,15 +82,27 @@ class HuffmanCoding:
             # merge two nodes
             heapq.heappush(self.heap, [min0[0] + min1[0]] + min0[1:] + min1[1:])
 
+        # heap now is list
+        self.heap = heapq.heappop(self.heap)[1:]
+
         # create dict from heap (key - char, value - huffman code)
-        self.heap = dict(heapq.heappop(self.heap)[1:])
+        self.hf_codes = dict(self.heap)
 
         # convert to binary string
-        return ''.join([self.heap[char] for char in msg])
+        return ''.join([self.hf_codes[char] for char in msg])
 
 def main():
     hc = HuffmanCoding()
-    print(hc.encode('AAAABBBCC'))
+
+    str_to_encode = 'Ларионов-Тришкин Теодор Арсений'
+
+    encoded = hc.encode(str_to_encode)
+    decoded = hc.decode(encoded, hc.hf_codes)
+    
+    print(f'Encoded: {encoded}')
+    print(f'Decoded: {decoded}')
+
+    print(f'str_to_encode == decoded: {str_to_encode == decoded}')
 
 if __name__ == '__main__':
     main()
