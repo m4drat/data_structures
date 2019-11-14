@@ -7,12 +7,6 @@ import heapq
 from dataclasses import dataclass
 
 @dataclass
-class ListNode:
-    left: ListNode
-    right: ListNode
-    value: typing.Any
-
-@dataclass
 class HuffmanCoding:
     heap: list = None
     hf_codes: dict = None
@@ -20,6 +14,17 @@ class HuffmanCoding:
 
     def normalize(self, msg: str) -> str:
         return msg.upper()
+
+    def un_encode(self, msg: str):
+        '''
+        params:
+            msg: str
+                huffman-coded message
+        return:
+            encoded string
+        '''
+        data = [msg[i:i+7] for i in range(0, len(msg), 7)]
+        return ''.join(chr(int(data[idx], 2)) for idx in range(0, len(data)))
 
     def decode(self, msg: str, freq: dict) -> str:
         '''
@@ -99,8 +104,9 @@ def main():
     encoded = hc.encode(str_to_encode)
     decoded = hc.decode(encoded, hc.hf_codes)
     
-    print(f'Encoded: {encoded}')
-    print(f'Decoded: {decoded}')
+    print(f'Encoded:   "{encoded}"')
+    print(f'UnEncoded: "{hc.un_encode(encoded)}"')
+    print(f'Decoded:   "{decoded}"')
 
     print(f'str_to_encode == decoded: {str_to_encode == decoded}')
 
