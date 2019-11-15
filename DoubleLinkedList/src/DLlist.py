@@ -52,23 +52,25 @@ class ListNode():
     def __str__(self) -> str:
         return f'<{self.__class__.__name__} object at {hex(id(self))}>'
 
-    def __iter__(self):
+    def __iter__(self) -> ListNode:
         return self
 
-    def __next__(self):
+    def __next__(self) -> ListNode:
         return self.next()
 
-    def next(self):
+    def next(self) -> ListNode:
         '''returns next node, that references in current
 
-        Return
+        Returns
+        -------
             ListNode or None
         '''
         return self.next_node
 
-    def prev(self):
+    def prev(self) -> ListNode:
         '''returns previous node, that references in current
-        Return
+        Returns
+        -------
             ListNode or None
         '''
         return self.prev_node
@@ -76,15 +78,17 @@ class ListNode():
     def copy(self) -> ListNode:
         '''Copies current node
 
-        Return
-            ListNode with current node content
+        Returns
+        -------
+            independent ListNode
         '''
         return ListNode(self.data, self.prev_node, self.next_node)
 
-    def clear_node(self):
-        ''' Clears current node, by setting all its pointers to None
+    def clear_node(self) -> None:
+        '''Clears current node, by setting all its pointers to None
         
-        Return
+        Returns
+        -------
             None
         '''
         self.data = None
@@ -125,7 +129,7 @@ class DLlist():
                 for elem in initializer:
                     self.push_back(elem)
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         if isinstance(other, DLlist):
             return (len(other) == self.__length and
                     sum([True for i, j in zip(self, other) if i == j]) == self.__length)
@@ -185,14 +189,15 @@ class DLlist():
         self.__current_node = None
         return current
 
-    # FIXME
-    def __iter__(self):
+    # FIXME make it work with nested loops
+    def __iter__(self) -> DLlist:
         return DLlist(self, self.__current_node)
 
-    def __next__(self):
+    # TODO refactor!
+    def __next__(self) -> typing.Any:
         return self.next().data
 
-    def __len__(self):
+    def __len__(self) -> int:
         return self.__length
 
     def __hash__(self):
@@ -226,7 +231,12 @@ class DLlist():
     def push_back(self, data: typing.Any) -> int:
         '''append new ListNode in the end, with node.data = data
         
-        Return
+        Parameters
+        ----------
+        data: can be any type
+
+        Returns
+        -------
             list length : int 
         '''
         if self.__start_node == None and self.__end_node == None:
@@ -317,7 +327,12 @@ class DLlist():
     def push_front(self, data: typing.Any) -> int:
         '''insert new ListNode at the beginning
         
-        Return
+        Parameters
+        ----------
+            data: can be any type
+
+        Returns
+        -------
             list length : int 
         '''
         if self.__start_node == None and self.__end_node == None:
@@ -407,8 +422,14 @@ class DLlist():
     def front_insert(self, data: typing.Any, pos: int) -> int:
         '''insert new node, with node.data = data before given node (by index)
         
-        Return
-            list length : int
+        Parameters
+        ----------
+            data: can be any type
+            pos: int (index, before which element you want to insert new node)
+
+        Returns
+        -------
+            list length : int 
         '''
 
         node = self.__get(pos)
@@ -439,8 +460,14 @@ class DLlist():
     def rear_insert(self, data: typing.Any, pos: int) -> int:
         '''insert new node, with node.data = data after given node (by index)
         
-        Return
-            list length : int
+        Parameters
+        ----------
+            data: can be any type
+            pos: int (index, after which element you want to insert new node)
+
+        Returns
+        -------
+            list length : int 
         '''
         
         node = self.__get(pos)
@@ -472,8 +499,13 @@ class DLlist():
     def delete(self, pos: int) -> int:
         '''delete one element from list
         
-        Return
-            list length : int
+        Parameters
+        ----------
+            pos: int (index, where you want to delete node)
+
+        Returns
+        -------
+            list length : int 
         '''
         node = self.__get(pos)
 
@@ -504,16 +536,32 @@ class DLlist():
     # creates an independent copy of dll
     def copy(self) -> DLlist:
         '''create independent copy of current list
-       
-        Return 
+
+        Returns
+        -------
             DLlist
         '''
         return DLlist(self)
 
+    # TODO
+    def find(self, needle) -> typing.Any:
+        '''search for needle in DLlist
+
+        Parameters
+        ----------
+            needle: any data type you need
+
+        Returns
+        -------
+            index, where needle is found or None
+        '''
+        raise NotImplementedError()
+
     def clear(self) -> None:
         '''clear memory currently occupied by list (delete all pointers in each node)
         
-        Return
+        Returns
+        -------
             None
         '''
         self.__start_node = None
