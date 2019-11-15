@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import collections
+import exceptions
 import heapq
 import copy
 
@@ -15,16 +16,36 @@ class HuffmanCoding:
     default_freq_dict: dict = None
 
     def visualize(self, sq_init=None) -> Digraph:
+        '''
+        Creates graphviz.Digraph graph to visualize Huffman tree
+        Parameters
+        ----------
+        sq_init: heapq-transformed list with frequences and letters in this format: 
+            [[1, ['.']], [2, ['h']]] (each element is a list with 0 element = char frequency,
+            and 1 element = actual char) (in sub-lists with chars can be more, than 1 elements)
+        Returns
+        -------
+            digraph: Digraph
+        Raises
+        ------
+            exceptions.NotInitializedError: if vis_queue variable is not initialized
+        '''
+        # create deepcopy of variable, because we will change it 
         if sq_init == None:
-            sq_init = copy.deepcopy(self.vis_queue)
+            if self.vis_queue == None:
+                raise exceptions.NotInitializedError(f'The variable vis_queue is not initialized!')
+            else:
+                sq_init = copy.deepcopy(self.vis_queue)
         else:
             sq_init = copy.deepcopy(sq_init)
 
         digraph = Digraph()
 
+        # if there is only one letter in message
         if len(sq_init) == 1:
             digraph.node(f"'{sq_init[0][1][0]}'", shape='circle')
         else:
+            # create end nodes for all letters
             for node in sq_init:
                 digraph.node(name=node[1][0], label=f"'{node[1][0]}'", shape='circle')
             # iterate over heap, while there is no more unused nodes
@@ -35,12 +56,14 @@ class HuffmanCoding:
                 # create new node
                 new_node = [min0[0] + min1[0]] + [[min0[1][0] + min1[1][0]]]
 
+                # create merged node 
                 digraph.node(name=new_node[1][0], label='', shape='point')
 
+                # connect merged node with 2 other
                 digraph.edge(head_name=min0[1][0], tail_name=new_node[1][0], label='0')
                 digraph.edge(head_name=min1[1][0], tail_name=new_node[1][0], label='1')
 
-                # merge two nodes
+                # push resulting node to heapq
                 heapq.heappush(sq_init, new_node)
         
         return digraph
@@ -133,6 +156,7 @@ class HuffmanCoding:
         self.sorted_queue = [[freq, [char, ""]] for char, freq in freq_dict.items()]
         heapq.heapify(self.sorted_queue)
 
+        # initialize vis_queue var, to work with graphs
         self.vis_queue = copy.deepcopy(self.sorted_queue)
 
         # there is only one letter in message
@@ -181,7 +205,7 @@ def main():
 
     print(f'str_to_encode == decoded: {str_to_encode == decoded}')
 
-    hc.visualize().view()
+    hc.visualize().view(cleanup=True)
 
 if __name__ == '__main__':
     main()
