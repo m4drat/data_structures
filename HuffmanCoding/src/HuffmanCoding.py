@@ -1,7 +1,7 @@
 from __future__ import annotations
 
+import HuffmanCoding.src.exceptions
 import collections
-import exceptions
 import heapq
 import copy
 
