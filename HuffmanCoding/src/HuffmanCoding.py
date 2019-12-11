@@ -1,9 +1,11 @@
 from __future__ import annotations
 
-import HuffmanCoding.src.exceptions
+# import exceptions
+import exceptions
 import collections
 import heapq
 import copy
+from typing import *
 
 from dataclasses import dataclass
 from graphviz import Digraph
@@ -129,7 +131,7 @@ class HuffmanCoding:
                     continue
         return out
 
-    def encode(self, msg: str) -> str:
+    def encode(self, msg: Union[str, Dict[str, int]]) -> str:
         '''
         Parameters
         ----------
@@ -191,9 +193,11 @@ def main():
 
     strs_to_encode = ['AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 
                       'sacra ignis Inquisitionis devorabit vos', 
+                      'Hello world!',
                       'Лорем ипсум долор сит амет, харум медиоцритатем еа дуо, нобис хомеро аудиам не дуо.', 
+                      'qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqttttttttttttttttttttttttttttuuuuuuuuoo',
                       'FFFFFFFHHHDDDJJJJJJJJJQQQQQPEEEEEEELLLLLDDDS']
-    str_to_encode  = strs_to_encode[2]
+    str_to_encode  = strs_to_encode[4]
 
     encoded = hc.encode(str_to_encode)
     decoded = hc.decode(encoded, hc.hf_codes)
