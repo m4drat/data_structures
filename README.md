@@ -16,3 +16,5 @@
       |Access|Search|Insertion|Deletion|
       |:----:|:----:|:-------:|:------:|
       |Nan   | Nan  | Nan     | Nan    |
+2. Adaptive Huffman coding
+3. LZ77 compressing algorithm
