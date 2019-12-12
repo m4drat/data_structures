@@ -100,75 +100,13 @@ class LZ77:
                 file.write(str(node).encode())
         return None
 
-def compare():
-    with open('C:/Users/madrat/Desktop/data.bin', 'rb') as file:
-        data = file.read()
-        print(f'Data size: {len(data)}')
-
-        lz77 = LZ77(64, 1024)
-        start_time = time.time()
-        compressed = lz77.compress(data)
-        end_time = time.time()
-        print(f'Data size compressed: {len(compressed) * 5}')
-        print(f'Compression time (64, 1024): {end_time - start_time} seconds')
-        
-
-        lz77 = LZ77(512, 1024)
-        start_time = time.time()
-        compressed = lz77.compress(data)
-        end_time = time.time()
-        print(f'Data size compressed: {len(compressed) * 5}')
-        print(f'Compression time (512, 1024): {end_time - start_time} seconds')
-
-        lz77 = LZ77(2048, 1024)
-        start_time = time.time()
-        compressed = lz77.compress(data)
-        end_time = time.time()
-        print(f'Data size compressed: {len(compressed) * 5}')
-        print(f'Compression time (2048, 1024): {end_time - start_time} seconds')
-
-        lz77 = LZ77(2 ** 16, 1024)
-        start_time = time.time()
-        compressed = lz77.compress(data)
-        end_time = time.time()
-        print(f'Data size compressed: {len(compressed) * 5}')
-        print(f'Compression time (2 ** 16, 1024): {end_time - start_time} seconds')
-
-        # test big proactive
-        lz77 = LZ77(64, 2 ** 8)
-        start_time = time.time()
-        compressed = lz77.compress(data)
-        end_time = time.time()
-        print(f'Data size compressed: {len(compressed) * 5}')
-        print(f'Compression time (64, 2 ** 8): {end_time - start_time} seconds')
-
-        lz77 = LZ77(512, 2 ** 8)
-        start_time = time.time()
-        compressed = lz77.compress(data)
-        end_time = time.time()
-        print(f'Data size compressed: {len(compressed) * 5}')
-        print(f'Compression time (512, 2 ** 8): {end_time - start_time} seconds')
-
-        lz77 = LZ77(2048, 2 ** 8)
-        start_time = time.time()
-        compressed = lz77.compress(data)
-        end_time = time.time()
-        print(f'Data size compressed: {len(compressed) * 5}')
-        print(f'Compression time (2048, 2 ** 8): {end_time - start_time} seconds')
-
-        lz77 = LZ77(2 ** 16, 2 ** 8)
-        start_time = time.time()
-        compressed = lz77.compress(data)
-        end_time = time.time()
-        print(f'Data size compressed: {len(compressed) * 5}')
-        print(f'Compression time (2 ** 16, 2 ** 8): {end_time - start_time} seconds')
-
 def main():
-    lz77 = LZ77(5, 5)
-    compressed = lz77.compress('клара у карла украла кораллы')
-    lz77.write(compressed, 'C:/Users/madrat/Desktop/out.txt')
+    lz77 = LZ77(100, 100)
+    compressed = lz77.compress(input('Write message: '))
+    print(f'Compressed: {compressed}, ({len(compressed) * 3})')
+    # lz77.write(compressed, 'C:/Users/madrat/Desktop/out.txt')
     decompressed = lz77.decompress(compressed)
     print(decompressed)
 
 if __name__ == '__main__':
-    compare()
+    main()
